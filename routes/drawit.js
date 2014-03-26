@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'JTA Web Development' });
+  res.render('drawit/index', { title: 'DrawIt!' });
 };
