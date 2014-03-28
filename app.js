@@ -1,7 +1,6 @@
 var express = require('express')
   , app = express()
   , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server)
   , routes = require('./routes')
   , drawit = require('./routes/drawit')
   , http = require('http')
@@ -18,6 +17,8 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
+
+drawit.configure(server);
 
 app.configure('development', function(){
   app.use(express.errorHandler());
