@@ -6,7 +6,16 @@ block scripts
 block content
   h1= title
   p Welcome to #{title}
-  form#sendmessageform
-    input#message
-    input(type='submit',value='Send')
-  ul#chatwindow
+  div#mainwrapper
+    form#sendmessageform
+      input#message(placeholder='Message')
+      input(type='submit',value='Send')
+    ul#userlist
+    ul#chatwindow
+  div#loginwrapper
+    form#userform
+      input#username(placeholder='Username')
+      br
+      input#room(placeholder='Room')
+      br
+      input(type='submit',value="Let's Play")
