@@ -1,13 +1,16 @@
 
+// configuring socket.io
 exports.configure = function(server)
 {
 	// setup Socket.IO
 	var io = require('socket.io').listen(server);
 	var users = [];
+
 	// listen for connection
 	io.sockets.on('connection', function(socket) {
 		// listen for sent messages and process them
 		socket.on('sendmessage',function(data) {
+			data.username = socket.username;
 			io.sockets.in(socket.room).emit('newmessage',data);
 		});
 		
@@ -29,6 +32,10 @@ exports.configure = function(server)
 			}
 		});
 		
+		socket.on('mousemove',function(data) {
+			io.sockets.in(socket.room).emit('drawing',data);
+		});
+
 		socket.on('disconnect',function() {
 			console.log(socket.username + " disconnected from room '" + socket.room + "'");
 			if (!socket.username) return;
@@ -40,6 +47,7 @@ exports.configure = function(server)
 };
 
 
+// routes
 exports.index = function(req, res){
-  res.render('drawit/index', { title: 'DrawIt!' });
+  res.render('drawit/index', { title: 'DrawIt!',username: req.session.username });
 };

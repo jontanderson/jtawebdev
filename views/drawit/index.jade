@@ -4,18 +4,29 @@ block scripts
   script(src='/socket.io/socket.io.js')
   script(src='/javascripts/drawit.js')
 block content
-  h1= title
-  p Welcome to #{title}
   div#mainwrapper
-    form#sendmessageform
-      input#message(placeholder='Message')
-      input(type='submit',value='Send')
-    ul#userlist
-    ul#chatwindow
+    div#leftpanel
+      h1= title
+      p Welcome to DrawIt!
+      hr
+      div.box
+        h3.centered Current Players:
+        ul#userlist
+      div.box
+        h3.centered Chat
+        form#sendmessageform
+          input#message.textbox(placeholder='Message')
+          input.button(type='submit',value='Send')
+        hr
+        ul#chatlist
+    div#mainpanel
+      canvas#pad(width='1000',height='1000')
   div#loginwrapper
+    h1= title
+    p Welcome to #{title}
     form#userform
-      input#username(placeholder='Username')
+      input#username.textbox(placeholder='Username')
       br
-      input#room(placeholder='Room')
+      input#room.textbox(placeholder='Room')
       br
-      input(type='submit',value="Let's Play")
+      input.button(type='submit',value="Let's Play")
