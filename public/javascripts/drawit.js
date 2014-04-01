@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var socket = io.connect();
 	var $message = $("#message");
-	var $chatwindow = $("#chatwindow");
+	var $chatwindow = $("#chatlist");
 	var $userlist = $("#userlist");
 	var $pad = $("#pad");
 	var ctx = $pad[0].getContext('2d');

@@ -49,5 +49,5 @@ exports.configure = function(server)
 
 // routes
 exports.index = function(req, res){
-  res.render('drawit/index', { title: 'DrawIt!',username: req.session.username });
+  res.render('drawit/index', { title: 'DrawIt!' });
 };
