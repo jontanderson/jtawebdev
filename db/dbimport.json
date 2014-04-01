@@ -1,0 +1,130 @@
+{ category: "animals", phrase: "cat", picked: 0 }
+{ category: "animals", phrase: "dog", picked: 0 }
+{ category: "animals", phrase: "bird", picked: 0 }
+{ category: "animals", phrase: "duck", picked: 0 }
+{ category: "animals", phrase: "mouse", picked: 0 }
+{ category: "animals", phrase: "whale", picked: 0 }
+{ category: "animals", phrase: "hippo", picked: 0 }
+{ category: "animals", phrase: "cow", picked: 0 }
+{ category: "animals", phrase: "worm", picked: 0 }
+{ category: "animals", phrase: "ladybug", picked: 0 }
+{ category: "animals", phrase: "flamingo", picked: 0 }
+{ category: "animals", phrase: "alligator", picked: 0 }
+{ category: "animals", phrase: "puppy", picked: 0 }
+{ category: "animals", phrase: "kitten", picked: 0 }
+{ category: "animals", phrase: "monkey", picked: 0 }
+{ category: "animals", phrase: "pig", picked: 0 }
+{ category: "animals", phrase: "snake", picked: 0 }
+{ category: "animals", phrase: "fish", picked: 0 }
+{ category: "animals", phrase: "clown fish", picked: 0 }
+{ category: "animals", phrase: "seahorse", picked: 0 }
+{ category: "animals", phrase: "horse", picked: 0 }
+{ category: "animals", phrase: "shark", picked: 0 }
+{ category: "animals", phrase: "school of fish", picked: 0 }
+{ category: "things", phrase: "sun", picked: 0 }
+{ category: "things", phrase: "cup", picked: 0 }
+{ category: "things", phrase: "ghost", picked: 0 }
+{ category: "things", phrase: "ﬂower", picked: 0 }
+{ category: "things", phrase: "pie", picked: 0 }
+{ category: "things", phrase: "banana", picked: 0 }
+{ category: "things", phrase: "snowﬂake", picked: 0 }
+{ category: "things", phrase: "book", picked: 0 }
+{ category: "things", phrase: "jar", picked: 0 }
+{ category: "things", phrase: "light", picked: 0 }
+{ category: "things", phrase: "tree", picked: 0 }
+{ category: "things", phrase: "lips", picked: 0 }
+{ category: "things", phrase: "apple", picked: 0 }
+{ category: "things", phrase: "slide", picked: 0 }
+{ category: "things", phrase: "socks", picked: 0 }
+{ category: "things", phrase: "smile", picked: 0 }
+{ category: "things", phrase: "swing", picked: 0 }
+{ category: "things", phrase: "coat", picked: 0 }
+{ category: "things", phrase: "shoe", picked: 0 }
+{ category: "things", phrase: "water", picked: 0 }
+{ category: "things", phrase: "heart", picked: 0 }
+{ category: "things", phrase: "hat", picked: 0 }
+{ category: "things", phrase: "ocean", picked: 0 }
+{ category: "things", phrase: "kite", picked: 0 }
+{ category: "things", phrase: "mouth", picked: 0 }
+{ category: "things", phrase: "milk", picked: 0 }
+{ category: "things", phrase: "eyes", picked: 0 }
+{ category: "things", phrase: "skateboard", picked: 0 }
+{ category: "things", phrase: "boy", picked: 0 }
+{ category: "things", phrase: "apple", picked: 0 }
+{ category: "things", phrase: "person", picked: 0 }
+{ category: "things", phrase: "girl", picked: 0 }
+{ category: "things", phrase: "ball", picked: 0 }
+{ category: "things", phrase: "house", picked: 0 }
+{ category: "things", phrase: "star", picked: 0 }
+{ category: "things", phrase: "nose", picked: 0 }
+{ category: "things", phrase: "bed", picked: 0 }
+{ category: "things", phrase: "jacket", picked: 0 }
+{ category: "things", phrase: "shirt", picked: 0 }
+{ category: "things", phrase: "beach", picked: 0 }
+{ category: "things", phrase: "egg", picked: 0 }
+{ category: "things", phrase: "face", picked: 0 }
+{ category: "things", phrase: "cookie", picked: 0 }
+{ category: "things", phrase: "cheese", picked: 0 }
+{ category: "things", phrase: "ice cream cone", picked: 0 }
+{ category: "things", phrase: "drum", picked: 0 }
+{ category: "things", phrase: "circle", picked: 0 }
+{ category: "things", phrase: "spoon", picked: 0 }
+{ category: "things", phrase: "spider web", picked: 0 }
+{ category: "idioms", phrase: "out of the frying pan and into the ﬁre", picked: 0 }
+{ category: "idioms", phrase: "one leg in the door", picked: 0 }
+{ category: "idioms", phrase: "why the long face?", picked: 0 }
+{ category: "idioms", phrase: "in the same boat", picked: 0 }
+{ category: "idioms", phrase: "up a creek without a paddle", picked: 0 }
+{ category: "idioms", phrase: "raining cats and dogs", picked: 0 }
+{ category: "idioms", phrase: "feeling under the weather", picked: 0 }
+{ category: "idioms", phrase: "green with envy", picked: 0 }
+{ category: "idioms", phrase: "frog in your throat", picked: 0 }
+{ category: "idioms", phrase: "head over heels in love", picked: 0 }
+{ category: "idioms", phrase: "a wolf in sheep's clothing", picked: 0 }
+{ category: "idioms", phrase: "grab the bull by the horns", picked: 0 }
+{ category: "idioms", phrase: "out of this world", picked: 0 }
+{ category: "idioms", phrase: "water under the bridge", picked: 0 }
+{ category: "idioms", phrase: "put your foot in your mouth", picked: 0 }
+{ category: "idioms", phrase: "bull in a china closet", picked: 0 }
+{ category: "idioms", phrase: "have a cow", picked: 0 }
+{ category: "idioms", phrase: "tie the knot", picked: 0 }
+{ category: "idioms", phrase: "have two left feet", picked: 0 }
+{ category: "idioms", phrase: "get cold feet", picked: 0 }
+{ category: "idioms", phrase: "bouncing off the walls", picked: 0 }
+{ category: "idioms", phrase: "a fifth wheel", picked: 0 }
+{ category: "idioms", phrase: "kick the bucket", picked: 0 }
+{ category: "idioms", phrase: "when in Rome", picked: 0 }
+{ category: "idioms", phrase: "scared stiff", picked: 0 }
+{ category: "idioms", phrase: "one smart cookie", picked: 0 }
+{ category: "idioms", phrase: "caught red-handed", picked: 0 }
+{ category: "idioms", phrase: "the squeaky wheel gets the grease", picked: 0 }
+{ category: "idioms", phrase: "a ﬂy on the wall", picked: 0 }
+{ category: "idioms", phrase: "jump the gun", picked: 0 }
+{ category: "idioms", phrase: "throw a ﬁt", picked: 0 }
+{ category: "idioms", phrase: "take a hike", picked: 0 }
+{ category: "idioms", phrase: "fraidey cat", picked: 0 }
+{ category: "idioms", phrase: "carry a tune", picked: 0 }
+{ category: "idioms", phrase: "eat my words", picked: 0 }
+{ category: "idioms", phrase: "apple of my eye", picked: 0 }
+{ category: "idioms", phrase: "hit the road", picked: 0 }
+{ category: "idioms", phrase: "a blessing in disguise", picked: 0 }
+{ category: "idioms", phrase: "piece of cake", picked: 0 }
+{ category: "idioms", phrase: "all bark and no bite", picked: 0 }
+{ category: "idioms", phrase: "when pigs ﬂy", picked: 0 }
+{ category: "idioms", phrase: "cost an arm and a leg", picked: 0 }
+{ category: "idioms", phrase: "hold your horses", picked: 0 }
+{ category: "idioms", phrase: "the whole nine yards", picked: 0 }
+{ category: "idioms", phrase: "everything but the kitchen sink", picked: 0 }
+{ category: "idioms", phrase: "close, but no cigar", picked: 0 }
+{ category: "idioms", phrase: "back to the drawing board", picked: 0 }
+{ category: "idioms", phrase: "go out on a limb", picked: 0 }
+{ category: "idioms", phrase: "wake up on the wrong side of the bed ", picked: 0 }
+{ category: "idioms", phrase: "steal my thunder", picked: 0 }
+{ category: "idioms", phrase: "once in a blue moon", picked: 0 }
+{ category: "idioms", phrase: "let the cat out of the bag", picked: 0 }
+{ category: "idioms", phrase: "hit the sack", picked: 0 }
+{ category: "idioms", phrase: "let bygones be bygones", picked: 0 }
+{ category: "idioms", phrase: "grab the bull by the horns", picked: 0 }
+{ category: "idioms", phrase: "make a mountain out of a molehill", picked: 0 }
+{ category: "idioms", phrase: "can't keep a good dog down", picked: 0 }
+{ category: "idioms", phrase: "pull the wool over your eyes", picked: 0 }

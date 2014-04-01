@@ -1,3 +1,4 @@
+var Phrases = require('../db/db.js');
 
 // configuring socket.io
 exports.configure = function(server)
@@ -45,7 +46,6 @@ exports.configure = function(server)
 		});
 	});
 };
-
 
 // routes
 exports.index = function(req, res){
