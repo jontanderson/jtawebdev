@@ -9,12 +9,14 @@ exports.configure = function(server)
 
 	// listen for connection
 	io.sockets.on('connection', function(socket) {
+		
 		// listen for sent messages and process them
 		socket.on('sendmessage',function(data) {
 			data.username = socket.username;
 			io.sockets.in(socket.room).emit('newmessage',data);
 		});
 		
+		// new user signed in
 		socket.on('newuser',function(data,callback) {
 			if (users.indexOf(data["username"]) != -1)
 			{
@@ -33,10 +35,12 @@ exports.configure = function(server)
 			}
 		});
 		
+		// drawing
 		socket.on('mousemove',function(data) {
 			io.sockets.in(socket.room).emit('drawing',data);
 		});
 
+		// user leaves the room
 		socket.on('disconnect',function() {
 			console.log(socket.username + " disconnected from room '" + socket.room + "'");
 			if (!socket.username) return;
@@ -44,10 +48,22 @@ exports.configure = function(server)
 			io.sockets.in(socket.room).emit('usernames',users[socket.room]);
 			io.sockets.in(socket.room).emit('userleft',socket.username);
 		});
+
+		// user chose a category
+		socket.on('categorychosen',function(category) {
+			Phrases.getPhrase(category,function(err,phrase) {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				console.log("New Phrase is " + phrase);
+				socket.emit('newphrase',phrase);
+			});
+		});
 	});
 };
 
 // routes
 exports.index = function(req, res){
-  res.render('drawit/index', { title: 'DrawIt!' });
+  res.render('drawit/index', { title: 'DrawIt!',categories: Phrases.getCategories() });
 };

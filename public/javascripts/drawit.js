@@ -13,6 +13,14 @@ $(document).ready(function() {
 	ctx.lineCap = 'round';
 	ctx.lineWidth = 5;
 
+	$("#categoryselect").on('change',function(e) {
+		socket.emit('categorychosen',$("#categoryselect").find(":selected").attr('value'));
+	});
+
+	$("#pickagain").on('click',function(e) {
+		socket.emit('categorychosen',$("#categoryselect").find(":selected").attr('value'));
+	});
+
 	$("#sendmessageform").submit(function(e) {
 		e.preventDefault();
 		var data = { 
@@ -104,5 +112,13 @@ $(document).ready(function() {
 
 	socket.on('newmessage',function(data) {
 		$chatwindow.prepend("<li class='message'><span class='user'>" + data['username'] + "</span>: " + data['message'] + "</li>");
+	});
+
+	socket.on('newphrase',function(phrase) {
+		$("#choosecategory").fadeOut(500,function() {
+			$("#phrasepreview").html(phrase.phrase.toUpperCase());
+			$("#phrase").html(phrase.phrase.toUpperCase());
+			$("#choosephrase").fadeIn(500);
+		});
 	});
 });
