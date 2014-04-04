@@ -25,13 +25,13 @@ block content
         h1 You are up next!
         p
           | To begin, choose a category for the phrase:
-        select#categoryselect
-          option(value='none') -- Choose A Category --
-          each category in categories
-            option(value=category) #{category.charAt(0).toUpperCase() + category.slice(1)}
+      select#categoryselect
+        option(value='none') -- Choose A Category --
+        each category in categories
+          option(value=category) #{category.charAt(0).toUpperCase() + category.slice(1)}
       div#choosephrase
         p Here's your word: 
-        h1#phrasepreview ALLIGATOR
+        h1#phrasepreview
         p 
           | Not feeling it?
           input#pickagain.button(type='button',value='Pick Again')
@@ -39,11 +39,12 @@ block content
           | Once you are happy with the word, 
           | and ready to draw it,
           | press the 'Start Timer' button
-        input#starttime.button(type='submit',value='Start Timer')
-      div#drawphrase
-        h1#phrase ALLIGATOR
-        h1#timer 00:59
+        input#starttime.button(type='button',value='Start Timer')
+    div#drawphrase
+      div#phrase
+      div#timer
     div#mainpanel
+      div#padcover
       canvas#pad(width='1000',height='1000')
   div#loginwrapper
     h1= title

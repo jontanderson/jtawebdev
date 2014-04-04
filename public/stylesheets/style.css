@@ -80,6 +80,16 @@ p {
 	height:100%;
 }
 
+#padcover {
+	background-color:#300;
+	opacity:0.25;
+	width:100%;
+	height:100%;
+	position:absolute;
+	z-index:1;
+	display:none;
+}
+
 #userlist {
 	padding:5px;
 }
@@ -94,30 +104,49 @@ p {
 #phrasewindow {
 	position:absolute;
 	width:400px;
-	height:200px;
+	min-height:200px;
 	margin:auto;
 	top:20px;
 	left:0px;
 	right:0px;
 	z-index:5;
-}
-
-#choosecategory, #choosephrase {
 	border:2px solid #aaa;
 	border-radius:5px;	
 	padding:10px;
+}
+
+#drawphrase {
+	position:absolute;
+	width:500px;
+	margin:auto;
+	top:10px;
+	right:0px;
+	z-index:5;
+	display:none;
+}
+
+#choosecategory, #choosephrase {
 }
 
 #choosephrase {
 	display:none;
 }
 
-#phrase {
+#phrase, #timer {
 	opacity:0.5;
 	color:#aaa;
 	font-family: 'Holtwood One SC',serif;
-	font-size:3em;
-	text-align:center;
+	font-size:2em;
+	text-align:right;
+	line-height:1.1em;
+	display:block;
+}
+
+#phrasepreview {
+	color:#333;
+	font-family: 'Holtwood One SC',serif;
+	font-size:2em;
+	text-align:center;	
 }
 
 #categoryselect {

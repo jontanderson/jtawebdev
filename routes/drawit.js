@@ -60,8 +60,42 @@ exports.configure = function(server)
 				socket.emit('newphrase',phrase);
 			});
 		});
+
+		socket.on('starttimer',function() {
+			console.log("Starting timer...");
+			var time = 11;
+			var timeout = new Date();
+			console.log(timeout.getTime());
+			var timeleft;
+			var now;
+			setTimeout(function() {
+				timeout = new Date();
+				timeout = (timeout.getTime() + time*1000);
+				io.sockets.in(socket.room).emit('playgame');
+				var intervalID = setInterval(function () {
+					now = new Date();
+					timeleft = timeout-(new Date()).getTime();
+					io.sockets.in(socket.room).emit('timerupdate',padTime(timeleft/1000));
+	   				if (timeleft <= 0) {
+	       				clearInterval(intervalID);
+	       				io.sockets.in(socket.room).emit('timeup');
+	   				}
+				}, 1000);
+			},500);
+		});
 	});
 };
+
+var padTime = function(i) {
+	if (i <= 0) {
+		return "0:00";
+	}
+	result = (Math.floor(i/60)) + ":";
+	if (i % 60 < 10) {
+		result = result + "0";
+	}
+	return result + Math.floor(i%60);
+}
 
 // routes
 exports.index = function(req, res){

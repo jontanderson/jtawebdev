@@ -21,6 +21,12 @@ $(document).ready(function() {
 		socket.emit('categorychosen',$("#categoryselect").find(":selected").attr('value'));
 	});
 
+	$("#starttime").on('click',function(e) {
+		$("#phrasewindow").hide();
+		$("#drawphrase").fadeIn(200);
+		socket.emit('starttimer');
+	});
+
 	$("#sendmessageform").submit(function(e) {
 		e.preventDefault();
 		var data = { 
@@ -55,7 +61,7 @@ $(document).ready(function() {
         ctx.stroke();
 	};
 
-	$pad.on('mousedown',function(e) {
+	$pad.on('mousedown touchdown',function(e) {
 		e.preventDefault();
 		if (!lastpos.drawing) {
 			//rect = drawpad.getBoundingClientRect();
@@ -66,7 +72,7 @@ $(document).ready(function() {
 		lastpos.drawing = true;
 	});
 
-	$pad.on('mousemove',function(e) {
+	$pad.on('mousemove touchmove',function(e) {
 		if (lastpos) {
 			if(($.now() - lastemit > 30) && (lastpos.drawing)) {
 				//rect = drawpad.getBoundingClientRect();
@@ -79,14 +85,13 @@ $(document).ready(function() {
 		}
 	});
 
-	$pad.on('mouseup mouseleave',function() {
+	$pad.on('mouseup mouseleave touchup touchleave',function() {
 		lastpos.drawing = false;
 	});
 
 	socket.on('drawing',function(data) {
 		// check if set
 		if (lastpos.x) {
-			$("body").append("(" + data.x1 + "," + data.y1 + ") - (" + data.x2 + "," + data.y2 + ")");
 			// draw line from last position
 			drawLine(data.x1, data.y1, data.x2, data.y2);
 		}
@@ -115,10 +120,24 @@ $(document).ready(function() {
 	});
 
 	socket.on('newphrase',function(phrase) {
-		$("#choosecategory").fadeOut(500,function() {
+		$("#choosecategory").find("p").fadeOut(500,function() {
+			$("#categoryselect").fadeIn(500);
 			$("#phrasepreview").html(phrase.phrase.toUpperCase());
 			$("#phrase").html(phrase.phrase.toUpperCase());
 			$("#choosephrase").fadeIn(500);
 		});
+	});
+
+	socket.on('playgame',function() {
+		$("#drawphrase").show();
+	});
+
+	socket.on('timerupdate',function(newtime) {
+		$("#timer").html(newtime);
+	});
+
+	socket.on('timeup',function() {
+		$("#timer").css("color: #faa;");
+		$("#padcover").show();
 	});
 });
