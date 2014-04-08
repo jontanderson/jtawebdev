@@ -4,6 +4,7 @@ $(document).ready(function() {
 	var $chatwindow = $("#chatlist");
 	var $userlist = $("#userlist");
 	var $pad = $("#pad");
+	var $timer = $("#timer");
 	var ctx = $pad[0].getContext('2d');
 	var drawpad = document.getElementById('pad');
 	var lastpos = Object();
@@ -25,6 +26,10 @@ $(document).ready(function() {
 		$("#phrasewindow").hide();
 		$("#drawphrase").fadeIn(200);
 		socket.emit('starttimer');
+	});
+
+	$("#clearbutton").on('click',function(e) {
+		socket.emit('resetdrawing');
 	});
 
 	$("#sendmessageform").submit(function(e) {
@@ -56,36 +61,40 @@ $(document).ready(function() {
 	});
 	
 	var drawLine = function(x1,y1,x2,y2) {
+		ctx.beginPath();
 		ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
 	};
 
-	$pad.on('mousedown touchdown',function(e) {
+	socket.on('userchosentodraw',function() {
+		$("#nodraw").hide();
+		$("#padcover").hide();
+		$("#phrasewindow").fadeIn(1000);
+	});
+
+	$pad.on('touchstart',function(e) {
+		e.pageX = e.originalTarget.touchTargets[0].pageX;
+		e.pageY = e.originalTarget.touchTargets[0].pageY;
+		drawstart(e);
+	});
+
+	$pad.on('mousedown',function(e) {
 		e.preventDefault();
-		if (!lastpos.drawing) {
-			//rect = drawpad.getBoundingClientRect();
-			lastpos.x = (e.pageX/$pad.width())*1000;
-			lastpos.y = (e.pageY/$pad.height())*1000;
-			//alert(e.clientX/$("#mainpanel").width()*rect.width);
-		}
-		lastpos.drawing = true;
+		drawstart(e);
 	});
 
-	$pad.on('mousemove touchmove',function(e) {
-		if (lastpos) {
-			if(($.now() - lastemit > 30) && (lastpos.drawing)) {
-				//rect = drawpad.getBoundingClientRect();
-				posx = (e.pageX/$pad.width())*1000;
-				posy = (e.pageY/$pad.height())*1000;
-				drawLine(lastpos.x,lastpos.y,posx,posy);
-	            socket.emit('mousemove',{ x1: lastpos.x, y1: lastpos.y,x2: posx, y2: posy });
-	            lastemit = $.now();
-	        }			
-		}
+	$pad.on('touchmove',function(e) {
+		e.pageX = e.originalTarget.touchTargets[0].pageX;
+		e.pageY = e.originalTarget.touchTargets[0].pageY;
+		drawing(e);			
 	});
 
-	$pad.on('mouseup mouseleave touchup touchleave',function() {
+	$pad.on('mousemove',function(e) {
+		drawing(e);
+	});
+
+	$pad.on('mouseup mouseleave touchend',function() {
 		lastpos.drawing = false;
 	});
 
@@ -100,10 +109,21 @@ $(document).ready(function() {
 		lastpos.y = data.y2;
 	});
 
-	socket.on('usernames',function(usernames) {
+	socket.on('cleardrawing',function() {
+		ctx.clearRect(0,0,1000,1000);
+	});
+
+	socket.on('usernames',function(users) {
 		$userlist.empty();
-		for (i=0;i<usernames.length;i++) {
-			$userlist.append("<li class='user'>" + usernames[i] + "</li>");			
+		for (i=0;i<users.users.length;i++) {
+			if (users.drawer == users.users[i]) {
+				// set the class for this list item differently
+				// since the person is the drawer
+				drawerclass = "drawerclass";
+			} else {
+				drawerclass = "";
+			}
+			$userlist.append("<li class='user " + drawerclass + "'>" + users.users[i] + "</li>");			
 		}
 	});
 	
@@ -119,25 +139,71 @@ $(document).ready(function() {
 		$chatwindow.prepend("<li class='message'><span class='user'>" + data['username'] + "</span>: " + data['message'] + "</li>");
 	});
 
-	socket.on('newphrase',function(phrase) {
+	socket.on('newgame',function(user) {
+		$("#nodraw").show();
+		$("#padcover").hide();
+		$("#drawphrase").hide();
+		$("#clearbutton").hide();
+		$("#phrasepreview").hide();
+		$("#choosephrase").hide();
+		if(user == socket.username) {
+			// current drawer
+			$("#choosecategory").fadeIn(500);
+			$("#nodraw").hide();
+		}
+	});
+
+	socket.on('newphrase',function(data) {
 		$("#choosecategory").find("p").fadeOut(500,function() {
 			$("#categoryselect").fadeIn(500);
-			$("#phrasepreview").html(phrase.phrase.toUpperCase());
-			$("#phrase").html(phrase.phrase.toUpperCase());
+			$("#phrasepreview").html(data.phrase.toUpperCase());
+			$("#phrase").html(data.phrase.toUpperCase());
 			$("#choosephrase").fadeIn(500);
 		});
 	});
 
-	socket.on('playgame',function() {
+	socket.on('newcategory',function(category) {
 		$("#drawphrase").show();
+		$("#category").html("The current category is: " + category.toUpperCase());
+	});
+
+	var drawstart = function(event) {
+		if (!lastpos.drawing) {
+			lastpos.x = (event.pageX/$pad.width())*1000;
+			lastpos.y = (event.pageY/$pad.height())*1000;
+		}
+		lastpos.drawing = true;		
+	};
+
+	var drawing = function(event) {
+		if (lastpos) {
+			if(($.now() - lastemit > 30) && (lastpos.drawing)) {
+				posx = (event.pageX/$pad.width())*1000;
+				posy = (event.pageY/$pad.height())*1000;
+				drawLine(lastpos.x,lastpos.y,posx,posy);
+	            socket.emit('mousemove',{ x1: lastpos.x, y1: lastpos.y,x2: posx, y2: posy });
+	            lastpos.x = posx;
+	            lastpos.y = posy;
+	            lastemit = $.now();
+	        }			
+		}
+	};
+
+	socket.on('playgame',function(preparestring) {
+		$("#drawphrase").show();
+		$timer.html(preparestring).show();
+		setTimeout(function() {
+			$timer.fadeOut(400);
+		},500);
 	});
 
 	socket.on('timerupdate',function(newtime) {
-		$("#timer").html(newtime);
+		$("#clearbutton").show();
+		$timer.show().html(newtime);
 	});
 
 	socket.on('timeup',function() {
-		$("#timer").css("color: #faa;");
+		$timer.css("{ color: #faa; }");
 		$("#padcover").show();
 	});
 });

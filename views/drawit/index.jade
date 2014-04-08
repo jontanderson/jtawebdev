@@ -41,10 +41,13 @@ block content
           | press the 'Start Timer' button
         input#starttime.button(type='button',value='Start Timer')
     div#drawphrase
+      div#category
       div#phrase
       div#timer
+      input#clearbutton.button(type='button',value='Clear Drawing')
     div#mainpanel
       div#padcover
+      div#nodraw
       canvas#pad(width='1000',height='1000')
   div#loginwrapper
     h1= title

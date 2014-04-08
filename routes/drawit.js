@@ -6,6 +6,7 @@ exports.configure = function(server)
 	// setup Socket.IO
 	var io = require('socket.io').listen(server);
 	var users = [];
+	var curdrawer;
 
 	// listen for connection
 	io.sockets.on('connection', function(socket) {
@@ -26,18 +27,22 @@ exports.configure = function(server)
 				socket.username = data['username'];
 				socket.room = data['room'];
 				socket.join(data['room']);
+				socket.isDrawing = false;
 				if (!users[data['room']]) {
 					users[data['room']] = new Array();
+					// if first user in the room, automatically chosen to draw
+					curdrawer = data['username'];
+					socket.emit('userchosentodraw');
 				}
 				users[data['room']].push(data['username']);
-				io.sockets.in(data['room']).emit('usernames',users[data['room']]);
+				io.sockets.in(data['room']).emit('usernames',{ users: users[data['room']], drawer: curdrawer });
 				io.sockets.in(data['room']).emit('userjoined',data['username']);
 			}
 		});
 		
 		// drawing
 		socket.on('mousemove',function(data) {
-			io.sockets.in(socket.room).emit('drawing',data);
+			socket.broadcast.to(socket.room).emit('drawing',data);
 		});
 
 		// user leaves the room
@@ -47,6 +52,8 @@ exports.configure = function(server)
 			users[socket.room].splice(users.indexOf(socket.username),1);
 			io.sockets.in(socket.room).emit('usernames',users[socket.room]);
 			io.sockets.in(socket.room).emit('userleft',socket.username);
+			if (users[socket.room].length > 0)
+			io.sockets.in(socket.room).emit('userchosentodraw')
 		});
 
 		// user chose a category
@@ -56,32 +63,43 @@ exports.configure = function(server)
 					console.log(err);
 					return;
 				}
-				console.log("New Phrase is " + phrase);
+				socket.broadcast.to(socket.room).emit('newcategory',phrase.category);
 				socket.emit('newphrase',phrase);
 			});
 		});
 
 		socket.on('starttimer',function() {
-			console.log("Starting timer...");
-			var time = 11;
-			var timeout = new Date();
-			console.log(timeout.getTime());
-			var timeleft;
-			var now;
-			setTimeout(function() {
-				timeout = new Date();
-				timeout = (timeout.getTime() + time*1000);
-				io.sockets.in(socket.room).emit('playgame');
-				var intervalID = setInterval(function () {
+			var i = 0;
+			var startup = [ 'READY', 'SET', 'GO!' ];
+			var prepareID = setInterval(function() {
+				io.sockets.in(socket.room).emit('playgame',startup[i]);
+				if (++i == 3) {
+					clearInterval(prepareID);
+					var time = 30;
+					var timeout = new Date();
+					var timeleft;
+					var now;
+					timeout = new Date();
+					timeout = (timeout.getTime() + time*1000);
+					io.sockets.in(socket.room).emit('playgame');
 					now = new Date();
 					timeleft = timeout-(new Date()).getTime();
 					io.sockets.in(socket.room).emit('timerupdate',padTime(timeleft/1000));
-	   				if (timeleft <= 0) {
-	       				clearInterval(intervalID);
-	       				io.sockets.in(socket.room).emit('timeup');
-	   				}
-				}, 1000);
-			},500);
+					var intervalID = setInterval(function () {
+						now = new Date();
+						timeleft = timeout-(new Date()).getTime();
+						io.sockets.in(socket.room).emit('timerupdate',padTime(timeleft/1000));
+		   				if (timeleft <= 0) {
+		       				clearInterval(intervalID);
+		       				io.sockets.in(socket.room).emit('timeup');
+		   				}
+					}, 1000);
+				}
+			},1000);
+		});
+
+		socket.on('resetdrawing',function() {
+			io.sockets.in(socket.room).emit('cleardrawing');
 		});
 	});
 };
