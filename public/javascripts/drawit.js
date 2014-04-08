@@ -45,9 +45,8 @@ $(document).ready(function() {
 	$("#userform").submit(function(e) {
 		e.preventDefault();
 		var data = {
-									username : $("#username").val(),
-									room     : $("#room").val()
-							 };
+						username : $("#username").val(),
+					};
 		socket.emit('newuser', data,function(valid) {
 			if (valid) {
 				$("#loginwrapper").hide();
@@ -56,7 +55,6 @@ $(document).ready(function() {
 				alert("That username is already in use.  Please choose another.");				
 			}
 			$("#username").val('');
-			$("#room").val('');
 		});
 	});
 	

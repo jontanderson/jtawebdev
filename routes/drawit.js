@@ -8,6 +8,10 @@ exports.configure = function(server)
 	var users = [];
 	var curdrawer;
 
+	// configure heartbeat
+	io.set('heartbeat timeout',10);
+	io.set('heartbeat interval',4);
+
 	// listen for connection
 	io.sockets.on('connection', function(socket) {
 		
@@ -25,35 +29,32 @@ exports.configure = function(server)
 			} else {
 				callback(true);
 				socket.username = data['username'];
-				socket.room = data['room'];
-				socket.join(data['room']);
 				socket.isDrawing = false;
-				if (!users[data['room']]) {
-					users[data['room']] = new Array();
-					// if first user in the room, automatically chosen to draw
+				if (!users) {
+					users = new Array();
+					// if first user, automatically chosen to draw
 					curdrawer = data['username'];
 					socket.emit('userchosentodraw');
 				}
-				users[data['room']].push(data['username']);
-				io.sockets.in(data['room']).emit('usernames',{ users: users[data['room']], drawer: curdrawer });
-				io.sockets.in(data['room']).emit('userjoined',data['username']);
+				users.push(data['username']);
+				io.sockets.emit('usernames',{ users: users, drawer: curdrawer });
+				io.sockets.emit('userjoined',data['username']);
 			}
 		});
 		
 		// drawing
 		socket.on('mousemove',function(data) {
-			socket.broadcast.to(socket.room).emit('drawing',data);
+			socket.broadcast.emit('drawing',data);
 		});
 
 		// user leaves the room
 		socket.on('disconnect',function() {
-			console.log(socket.username + " disconnected from room '" + socket.room + "'");
 			if (!socket.username) return;
-			users[socket.room].splice(users.indexOf(socket.username),1);
-			io.sockets.in(socket.room).emit('usernames',users[socket.room]);
-			io.sockets.in(socket.room).emit('userleft',socket.username);
-			if (users[socket.room].length > 0)
-			io.sockets.in(socket.room).emit('userchosentodraw')
+			users.splice(users.indexOf(socket.username),1);
+			io.sockets.emit('usernames',users);
+			io.sockets.emit('userleft',socket.username);
+			if (users.length > 0)
+			io.sockets.emit('userchosentodraw')
 		});
 
 		// user chose a category
@@ -63,7 +64,7 @@ exports.configure = function(server)
 					console.log(err);
 					return;
 				}
-				socket.broadcast.to(socket.room).emit('newcategory',phrase.category);
+				socket.broadcast.emit('newcategory',phrase.category);
 				socket.emit('newphrase',phrase);
 			});
 		});
@@ -72,7 +73,7 @@ exports.configure = function(server)
 			var i = 0;
 			var startup = [ 'READY', 'SET', 'GO!' ];
 			var prepareID = setInterval(function() {
-				io.sockets.in(socket.room).emit('playgame',startup[i]);
+				io.sockets.emit('playgame',startup[i]);
 				if (++i == 3) {
 					clearInterval(prepareID);
 					var time = 30;
@@ -81,17 +82,17 @@ exports.configure = function(server)
 					var now;
 					timeout = new Date();
 					timeout = (timeout.getTime() + time*1000);
-					io.sockets.in(socket.room).emit('playgame');
+					io.sockets.emit('playgame');
 					now = new Date();
 					timeleft = timeout-(new Date()).getTime();
-					io.sockets.in(socket.room).emit('timerupdate',padTime(timeleft/1000));
+					io.sockets.emit('timerupdate',padTime(timeleft/1000));
 					var intervalID = setInterval(function () {
 						now = new Date();
 						timeleft = timeout-(new Date()).getTime();
-						io.sockets.in(socket.room).emit('timerupdate',padTime(timeleft/1000));
+						io.sockets.emit('timerupdate',padTime(timeleft/1000));
 		   				if (timeleft <= 0) {
 		       				clearInterval(intervalID);
-		       				io.sockets.in(socket.room).emit('timeup');
+		       				io.sockets.emit('timeup');
 		   				}
 					}, 1000);
 				}
@@ -99,7 +100,7 @@ exports.configure = function(server)
 		});
 
 		socket.on('resetdrawing',function() {
-			io.sockets.in(socket.room).emit('cleardrawing');
+			io.sockets.emit('cleardrawing');
 		});
 	});
 };
