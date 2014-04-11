@@ -30,15 +30,14 @@ exports.configure = function(server)
 				callback(true);
 				socket.username = data['username'];
 				socket.isDrawing = false;
-				if (!users) {
-					users = new Array();
+				if (users.length == 0) {
 					// if first user, automatically chosen to draw
 					curdrawer = data['username'];
 					socket.emit('userchosentodraw');
 				}
 				users.push(data['username']);
 				io.sockets.emit('usernames',{ users: users, drawer: curdrawer });
-				io.sockets.emit('userjoined',data['username']);
+				socket.broadcast.emit('userjoined',data['username']);
 			}
 		});
 		
@@ -53,8 +52,10 @@ exports.configure = function(server)
 			users.splice(users.indexOf(socket.username),1);
 			io.sockets.emit('usernames',users);
 			io.sockets.emit('userleft',socket.username);
-			if (users.length > 0)
-			io.sockets.emit('userchosentodraw')
+			if (users.length > 0) {
+				curdrawer = 0;
+				io.sockets.emit('userchosentodraw')
+			}
 		});
 
 		// user chose a category

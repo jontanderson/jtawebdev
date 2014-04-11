@@ -114,6 +114,7 @@ p {
 	width:400px;
 	min-height:200px;
 	margin:auto;
+	margin-left:400px;
 	top:20px;
 	left:0px;
 	right:0px;
@@ -204,11 +205,14 @@ li {
 	margin-bottom:5px;
 }
 
-
 .button {
 	min-width:70px;
 	padding:5px;
 	border-radius:5px;
 	border-style:solid;
 	border-color:#aaa;
+}
+
+.drawer {
+	font-weight:bold;
 }

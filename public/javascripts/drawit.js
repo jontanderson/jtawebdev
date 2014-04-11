@@ -65,10 +65,12 @@ $(document).ready(function() {
         ctx.stroke();
 	};
 
-	socket.on('userchosentodraw',function() {
-		$("#nodraw").hide();
-		$("#padcover").hide();
-		$("#phrasewindow").fadeIn(1000);
+	socket.on('userchosentodraw',function(username) {
+		if (username == socket.username) {
+			$("#nodraw").hide();
+			$("#padcover").hide();
+			$("#phrasewindow").fadeIn(1000);			
+		}
 	});
 
 	$pad.on('touchstart',function(e) {
@@ -117,11 +119,13 @@ $(document).ready(function() {
 			if (users.drawer == users.users[i]) {
 				// set the class for this list item differently
 				// since the person is the drawer
-				drawerclass = "drawerclass";
+				drawerclass = "drawer";
+				appendedtext = " (current drawer)";
 			} else {
 				drawerclass = "";
+				appendedtext = "";
 			}
-			$userlist.append("<li class='user " + drawerclass + "'>" + users.users[i] + "</li>");			
+			$userlist.append("<li class='user " + drawerclass + "'>" + users.users[i] + appendedtext + "</li>");			
 		}
 	});
 	
